@@ -1,5 +1,6 @@
 ﻿@inject HttpClient Http
 @inject AppState appState
+@using FootballWebApp.Shared.Entities.Events
 @implements IDisposable
 
 <div class="match-details">
@@ -38,13 +39,19 @@
 </div>
 
 @code {
-
+    List<Event> events;
     List<Logo> teamLogos;
 
     protected override async Task OnInitializedAsync()
     {
         appState.OnChange += StateHasChanged;
         await GetTeamLogos();
+        await GetEvents();
+    }
+
+    private async Task GetEvents()
+    {
+        events = await Http.PostJsonAsync<List<Event>>("Football/events", appState.SelectedMatch);
     }
 
     private async Task GetTeamLogos()
