@@ -1,0 +1,77 @@
+﻿@inject HttpClient Http
+@inject AppState appState
+@implements IDisposable
+
+<div class="match-details">
+    <div class="match-flexbox home-logo">
+        @if (appState.SelectedMatch.home_logo != null)
+        {
+            <img src="@appState.SelectedMatch.home_logo" alt="" height="100" />
+        }
+    </div>
+    <div class="match-flexbox comp-info">
+        @if (appState.SelectedMatch.competition_logo != null)
+        {
+            <img src="@appState.SelectedMatch.competition_logo" alt="" height="100">
+        }
+        else
+        {
+            <h3>@appState.SelectedMatch.country - @appState.SelectedMatch.competition_name</h3>
+        }
+    </div>
+    <div class="match-flexbox away-logo">
+        @if (appState.SelectedMatch.away_logo != null)
+        {
+            <img src="@appState.SelectedMatch.away_logo" alt="" height="100" />
+        }
+    </div>
+    <div class="match-home-team-info match-flexbox">
+        <div>@appState.SelectedMatch.home_name</div>
+    </div>
+    <div class="match-info match-flexbox">
+        <div>@appState.SelectedMatch.score</div>
+        <div>@appState.SelectedMatch.time</div>
+    </div>
+    <div class="match-away-team-info match-flexbox">
+        <div>@appState.SelectedMatch.away_name</div>
+    </div>
+</div>
+
+@code {
+
+    List<Logo> teamLogos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        appState.OnChange += StateHasChanged;
+        await GetTeamLogos();
+    }
+
+    private async Task GetTeamLogos()
+    {
+        teamLogos = await Http.GetJsonAsync<List<Logo>>("Football/teamLogos");
+
+        foreach (var logo in teamLogos)
+        {
+            if (appState.SelectedMatch.home_name.ToLower() == logo.team_name.ToLower() ||
+                appState.SelectedMatch.home_name.Contains(logo.team_name) ||
+                $"FC {appState.SelectedMatch.home_name}".Contains(logo.team_name) ||
+                $"{appState.SelectedMatch.home_name} FC".Contains(logo.team_name))
+            {
+                appState.SelectedMatch.home_logo = logo.logo;
+            }
+            if (appState.SelectedMatch.away_name.ToLower() == logo.team_name.ToLower() ||
+                appState.SelectedMatch.away_name.Contains(logo.team_name) ||
+                $"FC {appState.SelectedMatch.away_name}".Contains(logo.team_name) ||
+                $"{appState.SelectedMatch.away_name} FC".Contains(logo.team_name))
+            {
+                appState.SelectedMatch.away_logo = logo.logo;
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        appState.OnChange -= StateHasChanged;
+    }
+}

@@ -1,0 +1,25 @@
+﻿@page "/match"
+@using  FootballWebApp.Client.Components.MatchComponents
+@inject HttpClient Http
+    
+<MatThemeProvider Theme="@MainTheme">
+    <MatTabGroup>
+        <MatTab Label="Match">
+            <MatchDetailsComponent/>
+        </MatTab>
+        <MatTab Label="Statistics">
+            <MatchStatsComponent />
+        </MatTab>
+        <MatTab Label="Standings">
+            <MatchStandingsComponent />
+        </MatTab>
+    </MatTabGroup>
+</MatThemeProvider>
+    
+
+@code {
+    MatTheme MainTheme = new MatTheme()
+    {
+        Primary = "#43a047"
+    };
+}

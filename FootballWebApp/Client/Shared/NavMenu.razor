@@ -1,0 +1,225 @@
+﻿@using FootballWebApp.Client.Services
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject AppState appState
+@implements IDisposable
+
+<div Class="@((appState.IsNavOpen) ? "navOpen" : "navClosed") myNav">
+    @if (countries.Count == 0)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        @try
+        {
+            <MatThemeProvider Theme="@MainTheme">
+                <MatNavMenu Multi="true">
+                    @foreach (var country in countries)
+                    {
+                        <MatNavSubMenu>
+                            <MatNavSubMenuHeader>
+                                <MatNavItem AllowSelection="false">
+                                    @if (country.flag != null)
+                                    {
+                                        <img src="@country.flag" alt="" height="30" width="30">
+                                    }
+                                    else
+                                    {
+                                        <div style="width: 30px; height: 30px;"></div>
+                                    }
+                                    &nbsp;
+                                    @country.name
+                                </MatNavItem>
+                            </MatNavSubMenuHeader>
+
+                            <MatNavSubMenuList>
+                                @foreach (var comp in @country.competitions)
+                                {
+                                    <MatNavSubMenu>
+                                        <MatNavSubMenuHeader>
+                                            <MatNavItem AllowSelection="false">
+                                                @if (@comp.leagueLogo != null)
+                                                {
+                                                    <img src="@comp.leagueLogo" alt="" height="30" width="30">
+                                                }
+                                                else
+                                                {
+                                                    <div style="width: 30px; height: 30px;"></div>
+                                                }
+                                                &nbsp;
+                                                @comp.name
+                                            </MatNavItem>
+                                        </MatNavSubMenuHeader>
+
+                                        <MatNavSubMenuList>
+                                            @foreach (var match in matches)
+                                            {
+                                                if (comp.id == match.competition_id)
+                                                {
+                                                    string homeGoals = (match.score != null) ? match.score[0].ToString() : "";
+                                                    string awayGoals = (match.score != null) ? match.score[4].ToString() : "";
+                                                    <MatNavItem OnClick="@((e) => NavToggle(@match))" Style="margin: 5px 0;">
+                                                        <div class="grid-match-nav">
+                                                            <div class="match-time-nav">
+                                                                <div>@if (match.scheduled != null) {@match.scheduled}</div>
+                                                                <div>@match.time</div>
+                                                            </div>
+                                                            <div class="match-team-nav">
+                                                                <div>@match.home_name</div>
+                                                                <div>@match.away_name</div>
+                                                            </div>
+                                                            <div class="match-score-nav">
+                                                                <div>@homeGoals</div>
+                                                                <div>@awayGoals</div>
+                                                            </div>
+                                                        </div>
+                                                    </MatNavItem>
+                                                }
+                                            }
+                                        </MatNavSubMenuList>
+                                    </MatNavSubMenu>
+                                }
+                            </MatNavSubMenuList>
+                        </MatNavSubMenu>
+                        <MatDivider Style="background-color: grey"></MatDivider>
+                    }
+                </MatNavMenu>
+            </MatThemeProvider>
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public DateTime date { get; set; }
+
+    List<Country> countries;
+    List<Country> nestedCountries;
+    List<Competition> competitions;
+    List<Match> matches;
+    List<LeagueLogo> leagueLogos;
+
+    public DateTime TodaysDate = DateTime.Parse(DateTime.Now.ToString().Split(' ')[0]);
+
+    MatTheme MainTheme = new MatTheme()
+    {
+        Primary = "#43a047"
+    };
+
+    protected override void OnInitialized()
+    {
+        appState.OnChange += StateHasChanged;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        countries = new List<Country>();
+
+
+        nestedCountries = (await Http.GetJsonAsync<List<Country>>("Football/countries"))
+            .Union(await Http.GetJsonAsync<List<Country>>("Football/federations")).ToList()
+            .OrderBy(c => c.name).ToList();
+
+        competitions = (await Http.GetJsonAsync<List<Competition>>("Football/competitions"))
+            .OrderBy(c => c.id).ToList();
+
+        //has to be an object to post
+        Match dateMatch = new Match()
+        {
+            date = date.ToString()
+        };
+
+        //get fixtures if date is a future date
+        if (DateTime.Parse(date.ToString().Split(' ')[0]) > TodaysDate)
+        {
+            matches = await Http.PostJsonAsync<List<Match>>("Football/fixtures", dateMatch);
+        }
+        //get live, played and future matches if date is today
+        if (DateTime.Parse(date.ToString().Split(' ')[0]) == TodaysDate)
+        {
+            matches = (await Http.GetJsonAsync<List<Match>>("Football/live"))
+                .Union(await Http.PostJsonAsync<List<Match>>("Football/matches", dateMatch))
+                .Union(await Http.PostJsonAsync<List<Match>>("Football/fixtures", dateMatch)).ToList();
+        }
+        //get played matches if date is in the past
+        if (DateTime.Parse(date.ToString().Split(' ')[0]) < TodaysDate)
+        {
+            matches = await Http.PostJsonAsync<List<Match>>("Football/matches", dateMatch);
+        }
+
+        leagueLogos = await Http.GetJsonAsync<List<LeagueLogo>>("Football/leagueLogos");
+
+        NestLists();
+    }
+
+    private void NestLists()
+    {
+
+        try
+        {
+            foreach (var country in nestedCountries)
+            {
+                country.competitions = new List<Competition>();
+                foreach (var comp in competitions)
+                {
+                    comp.matches = new List<Match>();
+                    if (country.id == ((comp.countries.Count != 0) ? comp.countries[0].id : comp.federations[0].id))
+                    {
+                        foreach (LeagueLogo logo in leagueLogos)
+                        {
+                            if (country.name.ToLower() == logo.country_name.ToLower() &&
+                                comp.name.ToLower() == logo.name.ToLower())
+                            {
+                                comp.leagueLogo = logo.logo;
+                                country.flag = logo.flag;
+                            }
+                        }
+
+                        foreach (var match in matches)
+                        {
+                            if (comp.id == match.competition_id)
+                            {
+                                match.competition_logo = comp.leagueLogo;
+                                match.country = country.name;
+                                if(match.time.Length > 4) match.time = match.time.Substring(0,5);
+                                comp.matches.Add(match);
+                            }
+                        }
+                        if (comp.matches.Count != 0)
+                        {
+                            country.competitions.Add(comp);
+                        }
+                    }
+                }
+            }
+            countries = nestedCountries.Where(country => country.competitions.Count != 0).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public void NavToggle(Match match)
+    {
+        appState.SetCurrentMatch(match);
+        navigationManager.NavigateTo($"match");
+        appState.ToggleNav();
+    }
+
+    public void Dispose()
+    {
+        appState.OnChange -= StateHasChanged;
+    }
+
+}

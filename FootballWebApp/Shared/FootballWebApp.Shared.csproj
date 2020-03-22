@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MatBlazor" Version="2.2.0" />
+    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="11.0.0.1" />
+  </ItemGroup>
+
+</Project>

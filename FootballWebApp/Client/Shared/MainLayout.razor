@@ -1,0 +1,77 @@
+﻿@inherits LayoutComponentBase
+@inject AppState appState
+
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow Style="background-color: #43a047;">
+            <MatAppBarSection Align="@MatAppBarSectionAlign.Start">
+                <MatIconButton Icon="menu" ToggleIcon="menu" OnClick="@((e) => appState.ToggleNav())"></MatIconButton>
+                <MatThemeProvider Theme="@MainTheme">
+                    <MatDatePicker @bind-Value="DateSelected" Icon="date_range" Class="date-picker" Format="dd" Outlined="true" AllowInput="false"></MatDatePicker>
+                    <MatTextField @bind-Value="SearchValue" Class="search-input" Icon="search" OnFocus="@((e) => ToggleSearch(true))" OnFocusOut="@((e) => ToggleSearch(false))" Outlined="true" Style="@_searchFocused"></MatTextField>
+                </MatThemeProvider>
+                               
+                <MatAppBarTitle Class="app-bar-title">
+                    Football LiveScores
+                </MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <MatTooltip Tooltip="Settings">
+                    <MatIconButton Icon="settings"></MatIconButton>
+                </MatTooltip>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+    <MatAppBarContent>
+        <NavMenu date="@DateSelected"/>
+        <section class="container-fluid main-content">
+
+            @Body
+        </section>
+        <footer class="page-footer">
+            <div class="flex-1">
+                © 2020 <a href="//blazorboilerplate.com">Ryan Lewis</a> Version 0.0.1 - Developed by <a href="https://keithfimreite.com" target="_blank">Ryan Lewis</a>
+            </div>
+        </footer>
+    </MatAppBarContent>
+</MatAppBarContainer>
+
+@code
+{
+    private string _searchValue;
+    public string SearchValue
+    {
+        get => _searchValue;
+        set
+        {
+            _searchValue = value;
+            this.StateHasChanged();
+        }
+    }
+
+    private DateTime _dateSelected = DateTime.Now;
+    public DateTime DateSelected
+    {
+        get => _dateSelected;
+        set
+        {
+            _dateSelected = value;
+            this.StateHasChanged();
+            if (!appState.IsNavOpen) appState.ToggleNav();
+        }
+    }
+
+    MatTheme MainTheme = new MatTheme()
+    {
+        Primary = "#263238"
+    };
+
+    public string _searchFocused = "width: 60px;";
+
+    private void ToggleSearch(bool focused)
+    {
+        _searchFocused = (focused) ? "width: 200px;" : "width: 60px;";
+        if (focused && !appState.IsNavOpen) appState.ToggleNav();
+    }
+}
+

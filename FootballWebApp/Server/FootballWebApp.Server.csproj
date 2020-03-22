@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
+    <PackageReference Include="Dapper.FluentMap" Version="1.8.0" />
+    <PackageReference Include="MatBlazor" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.2.0-preview1.20073.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="11.0.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\FootballWebApp.Client.csproj" />
+    <ProjectReference Include="..\Shared\FootballWebApp.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.deps.json
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.dll
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.csprojAssemblyReference.cache
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.AssemblyInfoInputs.cache
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.AssemblyInfo.cs
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.pdb
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.dll
+C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.pdb
