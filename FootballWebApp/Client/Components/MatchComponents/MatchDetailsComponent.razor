@@ -1,5 +1,6 @@
 ﻿@inject HttpClient Http
 @inject AppState appState
+@using System.Threading
 @using FootballWebApp.Shared.Entities.Events
 @implements IDisposable
 
@@ -36,22 +37,147 @@
     <div class="match-away-team-info match-flexbox">
         <div>@appState.SelectedMatch.away_name</div>
     </div>
+
+    <MatDivider Class="divider"></MatDivider>
+
+    @if (appState.SelectedMatch.score != null)
+    {
+        if (HomeList.Count != 0)
+        {
+            <div class="match-events">
+                <div class="events-list">
+                    @foreach (EventDto homeEvent in HomeList)
+                    {
+                        <div class="home-event event">
+                            <div class="eventImg-time">
+                                <img src="@homeEvent.eventImage" />
+                                <div>@homeEvent.time</div>
+                            </div>
+                            <div class="player-name">@homeEvent.player</div>
+                        </div>
+                    }
+                </div>
+                <div class="events-list">
+                    @foreach (EventDto awayEvent in AwayList)
+                    {
+                        <div class="away-event event">
+                            <div>@awayEvent.player</div>
+                            <div>
+                                <img src=@awayEvent.eventImage />
+                                <div>@awayEvent.time</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+
+        }
+    }
+    else //then load fixture info
+    {
+        <div>@CountdownTime</div>
+    }
 </div>
 
 @code {
     List<Event> events;
     List<Logo> teamLogos;
 
+    List<EventDto> HomeList = new List<EventDto>();
+    List<EventDto> AwayList = new List<EventDto>();
+
+    string CountdownTime;
+    DateTime FixtureKickOffTime;
+
     protected override async Task OnInitializedAsync()
     {
         appState.OnChange += StateHasChanged;
+
         await GetTeamLogos();
-        await GetEvents();
+
+        if (appState.SelectedMatch.score != null)
+        {
+            await GetEvents();
+        }
+        else
+        {
+            FixtureTimer();
+        }
     }
 
     private async Task GetEvents()
     {
         events = await Http.PostJsonAsync<List<Event>>("Football/events", appState.SelectedMatch);
+
+        var BlankEvent = new EventDto();
+        if (events != null) if (events.Count != 0)
+            {
+                foreach (Event @event in events)
+                {
+                    //format the player name so the first name is displayed before the last name
+                    int idx = @event.player.LastIndexOf(" ");
+                    string playerToAdd;
+                    if (idx != -1)
+                    {
+                        playerToAdd = $"{@event.player.Substring(idx + 1)} {@event.player.Substring(0, idx)}";
+                    }
+                    else
+                    {
+                        playerToAdd = @event.player;
+                    }
+
+                    string eventImage;
+                    switch (@event.@event)
+                    {
+                        case "GOAL":
+                            eventImage = "../../Images/Goal.png";
+                            break;
+                        case "GOAL_PENALTY":
+                            eventImage = "../../Images/Penalty.png";
+                            break;
+                        case "OWN_GOAL":
+                            eventImage = "../../Images/ownGoal.png";
+                            break;
+                        case "YELLOW_CARD":
+                            eventImage = "../../Images/Yellow.png";
+                            break;
+                        case "RED_CARD":
+                            eventImage = "../../Images/Red.png";
+                            break;
+                        case "YELLOW_RED_CARD":
+                            eventImage = "../../Images/YellowRed.png";
+                            break;
+                        default:
+                            eventImage = @event.@event;
+                            break;
+                    }
+
+                    var EventToAdd = new EventDto
+                    {
+                        id = @event.id,
+                        match_id = @event.match_id,
+                        player = playerToAdd,
+                        time = @event.time,
+                        eventImage = eventImage,
+                        sort = @event.sort,
+                        home_away = @event.home_away
+                    };
+
+                    if (@event.home_away == "h")
+                    {
+                        HomeList.Insert(0, EventToAdd);
+                        AwayList.Insert(0, BlankEvent);
+                    }
+                    else
+                    {
+                        AwayList.Insert(0, EventToAdd);
+                        HomeList.Insert(0, BlankEvent);
+                    }
+                }
+            }
     }
 
     private async Task GetTeamLogos()
@@ -77,8 +203,33 @@
         }
     }
 
+    private void FixtureTimer()
+    {
+        FixtureKickOffTime = DateTime.Parse($"{appState.SelectedMatch.date} {appState.SelectedMatch.time}");
+        if (appState.SelectedMatch.time == "00:00" || appState.SelectedMatch.time == "00:30" || appState.SelectedMatch.time == "01:00")
+        {
+            FixtureKickOffTime = FixtureKickOffTime.AddDays(1);
+        }
+        TimeSpan ts = FixtureKickOffTime.Subtract(DateTime.Now);
+        string timeLeft = ts.ToString().Split('.')[0];
+        CountdownTime = ts.ToString("d' days 'h' hrs 'm' min 's' sec'");
+
+        var timer = new Timer(new TimerCallback(_ =>
+        {
+            ts = FixtureKickOffTime.Subtract(DateTime.Now);
+            timeLeft = ts.ToString().Split('.')[0];
+            CountdownTime = ts.ToString("d' days 'h' hrs 'm' min 's' sec'");
+            if (timeLeft != "00:00:00")
+            {
+
+            this.StateHasChanged();
+            }
+        }), null, 1000, 1000);
+    }
+
     public void Dispose()
     {
         appState.OnChange -= StateHasChanged;
+        this.Dispose();
     }
 }

@@ -1,5 +1,4 @@
-﻿@using FootballWebApp.Client.Services
-@inject HttpClient Http
+﻿@inject HttpClient Http
 @inject NavigationManager navigationManager
 @inject AppState appState
 @implements IDisposable
@@ -124,9 +123,20 @@
     {
         countries = new List<Country>();
 
+        var countriesConfirmed = await Http.GetJsonAsync<List<Country>>("Football/countries");
+        foreach (var country in countriesConfirmed)
+        {
+            country.isCountry = true;
+        }
 
-        nestedCountries = (await Http.GetJsonAsync<List<Country>>("Football/countries"))
-            .Union(await Http.GetJsonAsync<List<Country>>("Football/federations")).ToList()
+        var federationsConfirmed = await Http.GetJsonAsync<List<Country>>("Football/federations");
+        foreach (var country in federationsConfirmed)
+        {
+            country.isCountry = false;
+        }
+
+        nestedCountries = countriesConfirmed
+            .Union(federationsConfirmed).ToList()
             .OrderBy(c => c.name).ToList();
 
         competitions = (await Http.GetJsonAsync<List<Competition>>("Football/competitions"))
@@ -190,14 +200,14 @@
                             {
                                 match.competition_logo = comp.leagueLogo;
                                 match.country = country.name;
+                                match.competition_name = comp.name;
                                 if(match.time.Length > 4) match.time = match.time.Substring(0,5);
                                 comp.matches.Add(match);
                             }
                         }
                         if (comp.matches.Count != 0)
-                        {
-                            country.competitions.Add(comp);
-                        }
+                            if ((comp.countries.Count != 0 && country.isCountry) || (comp.federations.Count != 0 && !country.isCountry))
+                                country.competitions.Add(comp);
                     }
                 }
             }

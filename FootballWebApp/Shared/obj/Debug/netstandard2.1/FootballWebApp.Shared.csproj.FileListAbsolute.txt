@@ -6,3 +6,11 @@ C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\ne
 C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.pdb
 C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.dll
 C:\Users\RY209294\source\repos\FootballWebApp\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.pdb
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.deps.json
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.dll
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\bin\Debug\netstandard2.1\FootballWebApp.Shared.pdb
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.csprojAssemblyReference.cache
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.AssemblyInfoInputs.cache
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.AssemblyInfo.cs
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.dll
+C:\Users\Ryan\Desktop\Web\Repositories\FootballWebAppBlazor\FootballWebApp\Shared\obj\Debug\netstandard2.1\FootballWebApp.Shared.pdb

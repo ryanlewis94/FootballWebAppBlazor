@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FootballWebApp.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
-using FootballWebApp.Client.Services;
 using FootballWebApp.Server.Services;
 
 namespace FootballWebApp.Server.Controllers

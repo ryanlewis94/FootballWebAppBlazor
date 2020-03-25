@@ -3288,25 +3288,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\NWI_RY209294\\.nuget\\packages\\": {},
+    "C:\\Users\\Ryan\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Server\\FootballWebApp.Server.csproj",
+      "projectUniqueName": "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Server\\FootballWebApp.Server.csproj",
       "projectName": "FootballWebApp.Server",
-      "projectPath": "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Server\\FootballWebApp.Server.csproj",
-      "packagesPath": "C:\\Users\\NWI_RY209294\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Server\\obj\\",
+      "projectPath": "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Server\\FootballWebApp.Server.csproj",
+      "packagesPath": "C:\\Users\\Ryan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\NWI_RY209294\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -3320,11 +3320,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Client\\FootballWebApp.Client.csproj": {
-              "projectPath": "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Client\\FootballWebApp.Client.csproj"
+            "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Client\\FootballWebApp.Client.csproj": {
+              "projectPath": "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Client\\FootballWebApp.Client.csproj"
             },
-            "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Shared\\FootballWebApp.Shared.csproj": {
-              "projectPath": "C:\\Users\\RY209294\\source\\repos\\FootballWebApp\\FootballWebApp\\Shared\\FootballWebApp.Shared.csproj"
+            "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Shared\\FootballWebApp.Shared.csproj": {
+              "projectPath": "C:\\Users\\Ryan\\Desktop\\Web\\Repositories\\FootballWebAppBlazor\\FootballWebApp\\Shared\\FootballWebApp.Shared.csproj"
             }
           }
         }
@@ -3381,7 +3381,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

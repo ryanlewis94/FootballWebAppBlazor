@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Shared\Images\**" />
+    <Content Remove="Shared\Images\**" />
+    <EmbeddedResource Remove="Shared\Images\**" />
+    <None Remove="Shared\Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.2.0-preview1.20073.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.2.0-preview1.20073.1" PrivateAssets="all" />
@@ -17,10 +24,13 @@
     <ProjectReference Include="..\Shared\FootballWebApp.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Shared\Images\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="wwwroot\css\nav.css" />
+    <None Include="wwwroot\Images\Goal.png" />
+    <None Include="wwwroot\Images\ownGoal.png" />
+    <None Include="wwwroot\Images\Penalty.png" />
+    <None Include="wwwroot\Images\Red.png" />
+    <None Include="wwwroot\Images\Yellow.png" />
+    <None Include="wwwroot\Images\YellowRed.png" />
   </ItemGroup>
 
 </Project>

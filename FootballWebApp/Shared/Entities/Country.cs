@@ -9,6 +9,7 @@ namespace FootballWebApp.Shared.Entities
         public string id { get; set; }
         public string name { get; set; }
         public string flag { get; set; }
+        public bool isCountry { get; set; }
         public List<Competition> competitions { get; set; }
     }
 }

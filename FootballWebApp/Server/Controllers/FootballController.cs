@@ -72,19 +72,11 @@ namespace FootballWebApp.Server.Controllers
             return matchesToReturn;
         }
 
+        //Get Match Events
         [HttpPost("events", Name = "GetEvents")]
         public async Task<List<Event>> GetEvents(Match match)
         {
-            List<Event> eventsToReturn = new List<Event>();
-            if (match.score != null)
-            {
-                eventsToReturn = await _footballRepo.LoadEvents(match.id);
-                return eventsToReturn;
-            }
-            else
-            {
-                return eventsToReturn;
-            }
+            return await _footballRepo.LoadEvents(match.id);
         }
 
         //Get a list of future games
